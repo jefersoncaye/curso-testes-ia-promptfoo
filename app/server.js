@@ -1,3 +1,5 @@
+const fs = require('node:fs');
+const path = require('node:path');
 const http = require('node:http');
 const config = require('./config');
 const { chat, classify } = require('./assistant');
@@ -23,7 +25,14 @@ function readJson(req) {
   });
 }
 
+const CHAT_PAGE = path.join(__dirname, 'public', 'index.html');
+
 async function handle(req, res) {
+  // Chat page for manual exploration in the browser
+  if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html')) {
+    return send(res, 200, fs.readFileSync(CHAT_PAGE, 'utf8'), 'text/html; charset=utf-8');
+  }
+
   if (req.method === 'GET' && req.url === '/health') {
     return send(res, 200, {
       status: 'ok',
@@ -65,6 +74,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(config.port, () => {
   const model = config.mode === 'llm' ? ` | modelo ${config.llm.model} em ${config.llm.baseUrl}` : '';
-  console.log(`ShopDemo Assistente rodando em http://localhost:${config.port}`);
+  console.log(`ShopDemo Assistente rodando em http://localhost:${config.port} (abra no navegador para conversar)`);
   console.log(`Modo ${config.mode} | versão ${config.version}${model}`);
 });
