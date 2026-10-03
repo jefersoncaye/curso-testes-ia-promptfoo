@@ -1,0 +1,6 @@
+node_modules/
+.env
+results/
+*.junit.xml
+report*.html
+.promptfoo/

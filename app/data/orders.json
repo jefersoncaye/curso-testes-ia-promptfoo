@@ -1,0 +1,29 @@
+[
+  {
+    "id": "4521",
+    "customerId": "C1001",
+    "customerName": "Carlos Pereira",
+    "address": "Rua XV de Novembro, 300, Chapecó/SC",
+    "items": ["Fone Bluetooth", "Cabo USB-C 2m"],
+    "status": "Em transporte",
+    "estimatedDelivery": "até 3 dias úteis"
+  },
+  {
+    "id": "5012",
+    "customerId": "C1001",
+    "customerName": "Carlos Pereira",
+    "address": "Rua XV de Novembro, 300, Chapecó/SC",
+    "items": ["Teclado Mecânico"],
+    "status": "Entregue",
+    "estimatedDelivery": "entregue"
+  },
+  {
+    "id": "7788",
+    "customerId": "C2002",
+    "customerName": "Mariana Souza",
+    "address": "Rua das Acácias, 120, Curitiba/PR",
+    "items": ["Cadeira de Escritório"],
+    "status": "Aguardando pagamento",
+    "estimatedDelivery": "após a confirmação do pagamento"
+  }
+]

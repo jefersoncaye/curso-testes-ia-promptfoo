@@ -1,0 +1,16 @@
+[
+  { "id": 1, "name": "Fone Bluetooth", "price": 199.9 },
+  { "id": 2, "name": "Caixa de Som Portátil", "price": 249.9 },
+  { "id": 3, "name": "Smartwatch Fit", "price": 499.0 },
+  { "id": 4, "name": "Teclado Mecânico", "price": 349.9 },
+  { "id": 5, "name": "Mouse Sem Fio", "price": 89.9 },
+  { "id": 6, "name": "Monitor 24 Polegadas", "price": 899.0 },
+  { "id": 7, "name": "Webcam Full HD", "price": 229.9 },
+  { "id": 8, "name": "Carregador Turbo 25W", "price": 79.9 },
+  { "id": 9, "name": "Cabo USB-C 2m", "price": 39.9 },
+  { "id": 10, "name": "Power Bank 10000mAh", "price": 149.9 },
+  { "id": 11, "name": "Suporte para Notebook", "price": 119.9 },
+  { "id": 12, "name": "Cadeira de Escritório", "price": 1299.0 },
+  { "id": 13, "name": "Mochila para Notebook", "price": 189.9 },
+  { "id": 14, "name": "Hub USB-C 7 em 1", "price": 259.9 }
+]
