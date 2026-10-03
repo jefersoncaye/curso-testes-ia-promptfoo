@@ -1,6 +1,21 @@
 # Testes de IA com promptfoo: do Zero ao Pipeline
 
-Repositório do curso da CodeUp. Contém o ShopDemo Assistente (sistema sob teste) e a suíte de testes com promptfoo.
+Repositório do curso da CodeUp. Aqui está o **ShopDemo Assistente**, o chatbot que você vai testar durante o curso. A pasta de testes você cria do zero, aula a aula.
+
+## Como este repositório está organizado
+
+| Onde | O que tem |
+|---|---|
+| Branch `main` | Ponto de partida: só o app. É daqui que você começa |
+| Tags `aula-XX` | O estado do projeto no fim de cada aula. Use para conferir o seu código ou continuar de um ponto |
+| Branch `final` | A solução completa do curso |
+
+```bash
+git clone https://github.com/jefersoncaye/curso-testes-ia-promptfoo.git
+git tag                    # lista as aulas disponíveis
+git checkout aula-15       # vai para o fim da aula 15
+git checkout main          # volta para o seu trabalho
+```
 
 ## ShopDemo Assistente
 
@@ -23,28 +38,11 @@ npm start
 
 Endpoints: `GET /health`, `POST /chat` e `POST /classify`.
 
-## Testes com promptfoo
+## Requisitos
 
-```bash
-cd tests
-npm install
-npm run test:deterministic     # sem IA, roda contra o modo simulado
-npm run test:classifier        # contrato do /classify
-npm test                       # suíte inteira (casos "judge" precisam do Ollama com qwen3:8b)
-npm run report                 # interface web com os resultados
-```
-
-| Pasta ou arquivo | Conteúdo |
-|---|---|
-| `promptfooconfig.yaml` | Suíte principal contra o `/chat` |
-| `classifier.yaml` | Contrato JSON do `/classify` |
-| `targets/assistant.yaml` | Provider HTTP do assistente |
-| `cases/` | Casos de teste em YAML e CSV |
-| `asserts/rules.js` | Regras de negócio em JavaScript |
-| `redteam/` | Configuração do red team |
-| `compare-models.yaml` e `smoke.yaml` | Comparação de modelos e teste de fumaça dos providers |
-
-Cada caso tem `metadata.type`: `deterministic` (não usa IA, roda no CI em modo simulado) ou `judge` (precisa de uma IA como juiz).
+- Node.js 24 LTS (mínimo 22.22)
+- Git
+- Ollama, para os testes com IA local (o modo simulado funciona sem IA nenhuma)
 
 ## Modelos usados na gravação
 
@@ -53,3 +51,5 @@ Cada caso tem `metadata.type`: `deterministic` (não usa IA, roda no CI em modo 
 | `qwen3:1.7b` | `8f68893c685c` |
 | `qwen3:4b-instruct-2507-q4_K_M` | `0edcdef34593` |
 | `qwen3:8b` | `500a1f067a9f` |
+
+Se o `ollama list` mostrar um ID diferente, a tag passou a apontar para outra versão do modelo e as respostas podem mudar em relação ao vídeo.
