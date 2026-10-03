@@ -1,9 +1,0 @@
-Extract the sentences from the context below that are required to answer the query.
-Rules:
-- Copy each sentence exactly as it appears in the context, in its original language. Do not translate, rewrite, summarize or add quotes.
-- Write one sentence per line. No header, no label, no numbering, no bullets and no explanation.
-- If no sentence is relevant, write only: Insufficient Information
-
-query: {{query}}
-context:
-{{context}}
