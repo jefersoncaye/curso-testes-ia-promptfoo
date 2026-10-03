@@ -16,6 +16,8 @@ const SHIPPING_TIMES = {
   Norte: '10 a 15 dias úteis',
 };
 
+const STATUS_EN = { 'Em transporte': 'in transit', Entregue: 'delivered', 'Aguardando pagamento': 'awaiting payment' };
+
 const HELP = 'Posso ajudar com pedidos, produtos, frete, trocas, pagamento ou garantia.';
 
 function orderReply(order, orderId) {
@@ -30,7 +32,8 @@ function orderReply(order, orderId) {
 
 function englishReply(intent, data) {
   if (intent === 'order' && data.order && data.order.found) {
-    return `Hi! Your order ${data.order.id} is currently "${data.order.status}". Estimated delivery: ${data.order.estimatedDelivery}.`;
+    const status = STATUS_EN[data.order.status] || 'being processed';
+    return `Hi! Your order ${data.order.id} is ${status}. Let me know if you need anything else.`;
   }
   if (intent === 'order') return 'Could you please tell me your order number so I can check it for you?';
   if (intent === 'shipping') return 'We offer free shipping on orders over R$ 299. Delivery times depend on your region.';
@@ -76,7 +79,7 @@ function reply(message, { version, intent, order, orderId }) {
     case 'shipping': {
       const region = findRegion(message);
       if (region && v1) return 'A ShopDemo entrega em 24h para todo o Brasil.'; // bug B4
-      if (region) return `Para a região ${region.name} o prazo é de ${SHIPPING_TIMES[region.name]}. O frete é grátis em compras acima de R$ 299.`;
+      if (region) return `Para a região ${region.name} o prazo é de ${SHIPPING_TIMES[region.name]}, contados após a confirmação do pagamento.`;
       return 'O frete é grátis em compras acima de R$ 299. O prazo depende da região: Sul e Sudeste de 3 a 5 dias úteis, Centro-Oeste e Nordeste de 5 a 8, Norte de 10 a 15.';
     }
 

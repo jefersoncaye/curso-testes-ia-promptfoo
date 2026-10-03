@@ -17,5 +17,8 @@
     question: Qual o status do meu order 4521?
   assert:
     - type: llm-rubric
-      value: A resposta está inteiramente em português do Brasil.
+      value: >-
+        Todas as frases da resposta estão escritas em português do Brasil.
+        Se alguma frase estiver em outro idioma, mesmo contendo palavras em
+        português, a resposta reprova.
       metric: language
