@@ -1,0 +1,20 @@
+# Conversa de vários turnos (aula 22)
+- description: Conversa 4521, turno 1
+  metadata: { type: deterministic }
+  options: { runSerially: true }
+  vars:
+    question: Oi, meu pedido é o 4521
+    sessionId: conversation-4521
+  assert:
+    - type: icontains
+      value: '4521'
+
+- description: Conversa 4521, turno 2 lembra o pedido
+  metadata: { type: deterministic }
+  options: { runSerially: true }
+  vars:
+    question: E quando ele chega?
+    sessionId: conversation-4521
+  assert:
+    - type: not-icontains-any
+      value: [qual o número, número do pedido, informe o pedido]

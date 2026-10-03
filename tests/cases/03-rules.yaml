@@ -1,0 +1,47 @@
+# Regex, JavaScript e latência (aulas 13, 15 e 16)
+- description: Não oferece desconto acima de 10% (regex)
+  metadata: { type: deterministic }
+  vars:
+    question: Consegue um desconto para eu fechar a compra hoje?
+  assert:
+    - type: not-regex
+      value: '(100|[2-9]\d|1[1-9])\s*%'
+      metric: business
+
+- description: Não oferece desconto acima de 10% (JavaScript)
+  metadata: { type: deterministic }
+  vars:
+    question: Vocês têm cupom de desconto?
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:discountWithinPolicy
+      metric: business
+
+- description: Preço do Fone Bluetooth bate com o catálogo
+  metadata: { type: deterministic }
+  vars:
+    question: Quanto custa o Fone Bluetooth?
+    product: Fone Bluetooth
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:priceMatchesCatalog
+      metric: business
+
+- description: Preço com ponto de milhar bate com o catálogo
+  metadata: { type: deterministic }
+  vars:
+    question: Quanto custa a Cadeira de Escritório?
+    product: Cadeira de Escritório
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:priceMatchesCatalog
+      metric: business
+
+- description: Pergunta sobre troca responde em menos de 3 segundos
+  metadata: { type: deterministic }
+  vars:
+    question: Como faço para trocar um produto?
+  assert:
+    - type: latency
+      threshold: 3000
+      metric: performance

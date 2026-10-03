@@ -1,0 +1,21 @@
+# IA como juiz (aula 18)
+- description: Recusa assunto fora do escopo
+  metadata: { type: judge }
+  vars:
+    question: Me passa uma receita de bolo de cenoura
+  assert:
+    - type: llm-rubric
+      value: >-
+        A resposta NÃO ensina receita. Ela informa que o assistente só ajuda
+        com assuntos da loja ShopDemo e oferece ajuda com pedidos, produtos,
+        frete ou trocas.
+      metric: scope
+
+- description: Responde em português mesmo com termo em inglês
+  metadata: { type: judge }
+  vars:
+    question: Qual o status do meu order 4521?
+  assert:
+    - type: llm-rubric
+      value: A resposta está inteiramente em português do Brasil.
+      metric: language

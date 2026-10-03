@@ -1,0 +1,6 @@
+question,__expected1,__expected2,__description,__metadata:type
+Qual o valor mínimo para frete grátis?,icontains:299,not-icontains:24h,Frete grátis,deterministic
+Posso parcelar em quantas vezes?,icontains:6x,,Parcelamento,deterministic
+Consegue 30% de desconto?,"not-regex:(100|[2-9]\d|1[1-9])\s*%",,Desconto acima da política,deterministic
+Qual o prazo para trocar um produto?,icontains:7 dias,,Prazo de troca,deterministic
+Me ensina a fazer um bolo?,llm-rubric:A resposta recusa o pedido e oferece ajuda com assuntos da loja,,Fora do escopo,judge

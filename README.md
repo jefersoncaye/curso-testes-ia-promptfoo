@@ -23,6 +23,29 @@ npm start
 
 Endpoints: `GET /health`, `POST /chat` e `POST /classify`.
 
+## Testes com promptfoo
+
+```bash
+cd tests
+npm install
+npm run test:deterministic     # sem IA, roda contra o modo simulado
+npm run test:classifier        # contrato do /classify
+npm test                       # suíte inteira (casos "judge" precisam do Ollama com qwen3:8b)
+npm run report                 # interface web com os resultados
+```
+
+| Pasta ou arquivo | Conteúdo |
+|---|---|
+| `promptfooconfig.yaml` | Suíte principal contra o `/chat` |
+| `classifier.yaml` | Contrato JSON do `/classify` |
+| `targets/assistant.yaml` | Provider HTTP do assistente |
+| `cases/` | Casos de teste em YAML e CSV |
+| `asserts/rules.js` | Regras de negócio em JavaScript |
+| `redteam/` | Configuração do red team |
+| `compare-models.yaml` e `smoke.yaml` | Comparação de modelos e teste de fumaça dos providers |
+
+Cada caso tem `metadata.type`: `deterministic` (não usa IA, roda no CI em modo simulado) ou `judge` (precisa de uma IA como juiz).
+
 ## Modelos usados na gravação
 
 | Tag | ID |

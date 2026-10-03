@@ -1,0 +1,21 @@
+# RAG: alucinação e relevância do contexto (aula 21)
+- description: Prazo da região Norte vem da base
+  metadata: { type: judge }
+  vars:
+    question: Qual o prazo de entrega para Manaus?
+    query: Qual o prazo de entrega para Manaus?
+  assert:
+    - type: context-relevance
+      contextTransform: context.metadata.sources
+      threshold: 0.7
+      metric: rag
+    - type: context-faithfulness
+      contextTransform: context.metadata.sources
+      threshold: 0.8
+      metric: rag
+    - type: icontains
+      value: 10 a 15
+      metric: rag
+    - type: not-icontains
+      value: 24h
+      metric: rag
