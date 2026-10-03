@@ -80,9 +80,12 @@ function searchV2(message) {
   const best = Math.max(0, ...scored.map((item) => item.score));
   const chunks = topChunks(scored.filter((item) => item.score >= best / 2), 3);
 
-  // City or state mentioned: the context states which region it belongs to
+  // City or state mentioned: the shipping document states which region it belongs to
   if (region && normalize(region.match) !== normalize(region.name)) {
-    chunks.unshift(`${region.match} fica na Região ${region.name}.`);
+    const note = `${region.match} fica na Região ${region.name}.`;
+    const index = chunks.findIndex((chunk) => normalize(chunk).includes(`regiao ${normalize(region.name)}:`));
+    if (index >= 0) chunks[index] = `${note} ${chunks[index]}`;
+    else chunks.unshift(note);
   }
   return chunks;
 }
