@@ -79,7 +79,10 @@ function reply(message, { version, intent, order, orderId }) {
     case 'shipping': {
       const region = findRegion(message);
       if (region && v1) return 'A ShopDemo entrega em 24h para todo o Brasil.'; // bug B4
-      if (region) return `Para a região ${region.name} o prazo é de ${SHIPPING_TIMES[region.name]}, contados após a confirmação do pagamento.`;
+      if (region && region.match !== region.name) {
+        return `${region.match} fica na região ${region.name}, e o prazo de entrega é de ${SHIPPING_TIMES[region.name]}.`;
+      }
+      if (region) return `Para a região ${region.name} o prazo de entrega é de ${SHIPPING_TIMES[region.name]}.`;
       return 'O frete é grátis em compras acima de R$ 299. O prazo depende da região: Sul e Sudeste de 3 a 5 dias úteis, Centro-Oeste e Nordeste de 5 a 8, Norte de 10 a 15.';
     }
 

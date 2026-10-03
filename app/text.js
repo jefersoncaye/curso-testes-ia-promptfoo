@@ -30,7 +30,15 @@ const REGIONS = [
 // Returns the delivery region mentioned in the message (city, state or region name)
 function findRegion(message) {
   const text = normalize(message);
-  return REGIONS.find((region) => hasAny(text, region.terms)) || null;
+  for (const region of REGIONS) {
+    const match = region.terms.find((term) => hasWord(text, term));
+    if (match) return { name: region.name, match: titleCase(match) };
+  }
+  return null;
+}
+
+function titleCase(text) {
+  return text.replace(/(^|\s)\S/g, (c) => c.toUpperCase());
 }
 
 function findOrderId(message) {

@@ -1,6 +1,7 @@
 // Keyword search over the knowledge base (app/data).
 // v1: rereads every file on each request, exact words only, no synonyms (bugs B4 and B8).
-// v2: cached base, accent-insensitive, city/state mapped to region, includes the product catalog.
+// v2: cached base, one document per policy file, accent-insensitive, city/state mapped to region,
+// includes the product catalog.
 const fs = require('node:fs');
 const path = require('node:path');
 const { normalize, findRegion } = require('./text');
@@ -8,7 +9,7 @@ const { normalize, findRegion } = require('./text');
 const POLICIES_DIR = path.join(__dirname, 'data', 'policies');
 const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
 
-const STOPWORDS = new Set(['qual', 'quais', 'para', 'como', 'quando', 'onde', 'voces', 'vocês', 'meu', 'minha', 'esse', 'essa', 'isso', 'pode', 'posso', 'tem', 'temos', 'sobre', 'uma', 'umas', 'uns', 'com', 'sem', 'por', 'que', 'dos', 'das', 'nos', 'nas', 'mais', 'muito']);
+const STOPWORDS = new Set(['qual', 'quais', 'para', 'como', 'quando', 'onde', 'voces', 'vocês', 'meu', 'minha', 'esse', 'essa', 'isso', 'pode', 'posso', 'tem', 'temos', 'sobre', 'uma', 'umas', 'uns', 'com', 'sem', 'por', 'que', 'dos', 'das', 'nos', 'nas', 'mais', 'muito', 'produto', 'produtos', 'faco', 'fazer', 'quero', 'compra', 'compras', 'pedido', 'dados', 'mostra']);
 
 function readChunks() {
   const chunks = [];
@@ -20,6 +21,18 @@ function readChunks() {
     }
   }
   return chunks;
+}
+
+// v2: each policy file is one document (title included), so related rules stay together
+function readDocuments() {
+  return fs.readdirSync(POLICIES_DIR).sort().map((file) =>
+    fs
+      .readFileSync(path.join(POLICIES_DIR, file), 'utf8')
+      .split(/\r?\n/)
+      .map((line) => line.replace(/^#+\s*/, '').trim())
+      .filter(Boolean)
+      .join(' '),
+  );
 }
 
 function productChunks() {
@@ -48,11 +61,12 @@ function searchV1(message) {
 let cache = null;
 function searchV2(message) {
   if (!cache) {
-    cache = [...readChunks(), ...productChunks()].map((text) => ({ text, normalized: normalize(text) }));
+    cache = [...readDocuments(), ...productChunks()].map((text) => ({ text, normalized: normalize(text) }));
   }
   const words = normalize(message)
     .split(/[^a-z0-9]+/)
-    .filter((w) => w.length > 2 && !STOPWORDS.has(w));
+    .filter((w) => w.length > 2 && !STOPWORDS.has(w))
+    .map((w) => (w.length > 5 ? w.slice(0, 5) : w)); // simple stemming: trocar -> troca
   const region = findRegion(message);
   if (region) words.push(normalize(region.name));
 
@@ -61,7 +75,16 @@ function searchV2(message) {
     if (region && chunk.normalized.includes(`regiao ${normalize(region.name)}:`)) score += 5;
     return { text: chunk.text, score };
   });
-  return topChunks(scored, 3);
+
+  // Keeps only chunks close to the best one, so the context has no leftovers
+  const best = Math.max(0, ...scored.map((item) => item.score));
+  const chunks = topChunks(scored.filter((item) => item.score >= best / 2), 3);
+
+  // City or state mentioned: the context states which region it belongs to
+  if (region && normalize(region.match) !== normalize(region.name)) {
+    chunks.unshift(`${region.match} fica na Região ${region.name}.`);
+  }
+  return chunks;
 }
 
 function search(message, version) {
