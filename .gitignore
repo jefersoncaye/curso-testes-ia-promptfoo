@@ -5,3 +5,4 @@ results/
 report*.html
 .promptfoo/
 _debug/
+tests/redteam/redteam.yaml
