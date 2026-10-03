@@ -4,3 +4,4 @@ results/
 *.junit.xml
 report*.html
 .promptfoo/
+_debug/
