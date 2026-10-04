@@ -1,0 +1,13 @@
+{
+  "name": "shopdemo-ai-tests",
+  "version": "1.0.0",
+  "description": "Suíte de testes de IA do ShopDemo Assistente com promptfoo",
+  "private": true,
+  "scripts": {},
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "devDependencies": {
+    "promptfoo": "0.123.1"
+  }
+}
