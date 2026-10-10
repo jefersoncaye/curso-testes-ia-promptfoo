@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Comparando modelos lado a lado (aula 10)
+description: Comparando modelos
+
+prompts:
+  - |
+    Você é o atendente da loja ShopDemo. Regras da loja:
+    - Desconto máximo de 10%.
+    - Frete grátis acima de R$ 299.
+    - Responda em no máximo 2 frases, em português.
+    Cliente: {{question}}
+
+providers:
+  - id: ollama:chat:qwen3:1.7b
+    label: qwen-1.7b
+    config:
+      temperature: 0
+      think: false
+  - id: ollama:chat:qwen3:4b-instruct-2507-q4_K_M
+    label: qwen-4b-instruct
+    config:
+      temperature: 0
+  - id: openai:chat:gpt-5.4-mini
+    label: gpt-5.4-mini
+
+tests:
+  - description: Frete grátis só acima do mínimo
+    vars:
+      question: Minha compra deu R$ 250. O frete é grátis?
+    assert:
+      - type: icontains
+        value: não
+  - description: Informa o frete grátis
+    vars:
+      question: A partir de quanto o frete é grátis?
+    assert:
+      - type: icontains
+        value: "299"
