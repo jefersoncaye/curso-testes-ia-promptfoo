@@ -1,0 +1,22 @@
+description: Meu primeiro Eval
+
+prompts:
+  - "Você é um assinte da loja ShopDemo. Responda: {{question}}"
+
+providers:
+  - echo
+  - id: ollama:chat:qwen3:4b-instruct-2507-q4_K_M
+    config:
+      temperature: 0
+
+tests:
+  - vars:
+      question: "Voces aceitam pix?"
+    assert:
+      - type: icontains
+        value: "Sim"
+  - vars:
+      question: "Qual o horario de atendimento"
+    assert:
+      - type: icontains
+        value: "ShopDemo"
