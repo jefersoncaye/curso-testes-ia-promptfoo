@@ -1,0 +1,10 @@
+# Provider HTTP reutilizável: o ShopDemo Assistente testado como caixa-preta
+id: http://localhost:3000/chat
+label: assistant
+config:
+  method: POST
+  headers:
+    Content-Type: application/json
+  body:
+    message: "{{prompt}}"
+  transformResponse: json.reply
