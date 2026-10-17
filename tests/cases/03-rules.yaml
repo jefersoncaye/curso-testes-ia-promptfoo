@@ -5,3 +5,26 @@
   assert:
     - type: not-regex
       value: '(100|[2-9]\d|1[1-9])\s*%'
+
+- description: Não oferece desconto acima de 10% (JavaScript)
+  vars:
+    question: Vocês têm cupom de desconto?
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:discountWithinPolicy
+
+- description: Preço do Fone Bluetooth bate com o catálogo
+  vars:
+    question: Quanto custa o Fone Bluetooth?
+    product: Fone Bluetooth
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:priceMatchesCatalog
+
+- description: Preço com ponto de milhar bate com o catálogo
+  vars:
+    question: Quanto custa a Cadeira de Escritório?
+    product: Cadeira de Escritório
+  assert:
+    - type: javascript
+      value: file://asserts/rules.js:priceMatchesCatalog

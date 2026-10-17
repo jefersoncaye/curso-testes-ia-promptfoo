@@ -37,11 +37,20 @@ tests:
   - description: Consulta de pedido gera JSON válido no contrato
     vars:
       message: Qual o status do pedido 4521?
+    assert:
+      - type: javascript
+        value: JSON.parse(output).intent === 'order_status' && JSON.parse(output).orderId === '4521'
 
   - description: Pedido de troca é classificado como return
     vars:
       message: Quero trocar um produto que veio com defeito
+    assert:
+      - type: javascript
+        value: JSON.parse(output).intent === 'return'
 
   - description: Pergunta de frete é classificada como shipping
     vars:
       message: Qual o valor do frete para Curitiba?
+    assert:
+      - type: javascript
+        value: JSON.parse(output).intent === 'shipping'
