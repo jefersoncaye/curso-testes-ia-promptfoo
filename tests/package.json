@@ -12,6 +12,7 @@
   "scripts": {
     "test": "promptfoo eval",
     "report": "promptfoo view",
-    "test:classifier": "promptfoo eval -c classifier.yaml"
+    "test:classifier": "promptfoo eval -c classifier.yaml",
+    "test:deterministic": "promptfoo eval --filter-metadata type=deterministic"
   }
 }

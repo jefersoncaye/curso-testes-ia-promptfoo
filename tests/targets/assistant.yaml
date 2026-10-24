@@ -7,4 +7,5 @@ config:
     Content-Type: application/json
   body:
     message: "{{prompt}}"
+    sessionId: "{{sessionId}}"
   transformResponse: json.reply

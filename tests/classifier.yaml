@@ -16,8 +16,10 @@ providers:
       transformResponse: text
 
 defaultTest:
+  metadata: { type: deterministic }
   assert:
     - type: is-json
+      metric: format
       value:
         type: object
         required: [intent, orderId, confidence]
