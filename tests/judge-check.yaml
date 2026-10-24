@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# Calibração do juiz: respostas conhecidas, veredito esperado (aula 19)
+description: Calibração do juiz de idioma
+
+prompts:
+  - "{{answer}}"
+
+providers:
+  - echo
+
+defaultTest:
+  options:
+    provider:
+      id: ollama:chat:qwen3:8b
+      config:
+        temperature: 0
+        think: false
+  vars:
+    rubric: >-
+      Idioma da resposta: português do Brasil. Uma resposta escrita em
+      inglês, total ou parcialmente, reprova.
+
+tests:
+  - description: Português (juiz deve aprovar)
+    vars:
+      answer: Seu pedido 4521 está em transporte. Previsão de entrega até 3 dias úteis.
+    assert:
+      - type: llm-rubric
+        value: "{{rubric}}"
+
+  - description: Português com termo em inglês (juiz deve aprovar)
+    vars:
+      answer: Seu pedido 4521 está com status "Em transporte". Previsão de entrega até 3 dias úteis.
+    assert:
+      - type: llm-rubric
+        value: "{{rubric}}"
+
+  - description: Inglês (juiz deve reprovar)
+    vars:
+      answer: Hi! Your order 4521 is in transit. Let me know if you need anything else.
+    assert:
+      - type: not-llm-rubric
+        value: "{{rubric}}"
+
+  - description: Misto (juiz deve reprovar)
+    vars:
+      answer: 'Hi! Your order 4521 is currently "Em transporte". Estimated delivery: até 3 dias úteis.'
+    assert:
+      - type: not-llm-rubric
+        value: "{{rubric}}"
