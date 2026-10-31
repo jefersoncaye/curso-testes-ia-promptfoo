@@ -1,0 +1,35 @@
+# RAG: relevância do contexto e alucinação (aula 21)
+# Cada caso usa os prompts de avaliação da pasta graders/ (rubricPrompt).
+- description: Contexto encontrado para Manaus é relevante
+  metadata: { type: judge }
+  vars:
+    question: Qual o prazo de entrega para Manaus?
+    query: Qual o prazo de entrega para Manaus?
+  options:
+    rubricPrompt: file://graders/context-relevance.txt
+  assert:
+    - type: context-relevance
+      contextTransform: context.metadata.sources
+      threshold: 0.7
+      metric: rag
+    - type: icontains
+      value: 10 a 15
+      metric: rag
+    - type: not-icontains
+      value: 24h
+      metric: rag
+
+- description: Prazo da região Norte vem da base, sem alucinação
+  metadata: { type: judge }
+  vars:
+    question: Qual o prazo de entrega para Manaus?
+    query: Qual o prazo de entrega para Manaus?
+  options:
+    rubricPrompt:
+      - file://graders/faithfulness-statements.txt
+      - file://graders/faithfulness-verdicts.txt
+  assert:
+    - type: context-faithfulness
+      contextTransform: context.metadata.sources
+      threshold: 0.8
+      metric: rag

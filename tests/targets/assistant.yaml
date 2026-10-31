@@ -8,4 +8,8 @@ config:
   body:
     message: "{{prompt}}"
     sessionId: "{{sessionId}}"
-  transformResponse: json.reply
+  transformResponse: |
+    ({
+      output: json.reply,
+      metadata: { sources: json.context, tools: json.tools }
+    })
